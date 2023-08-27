@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "type": "docker-build",
+            "name": "Docker-build configuration",
+            "file": "Dockerfile",
+            "buildOptions": "-t test:latest",
+        },
+        {
+            "type": "docker-run",
+            "name": "Docker-run configuration",
+            "imageIdOrName": "test:latest",
+            "runOptions": "-p 127.0.0.1:8000:8000",
+        },
+        
+    ]
+}
