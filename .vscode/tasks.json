@@ -1,0 +1,30 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build project",
+            "type": "docker-build",
+            "dockerBuild": {
+                "context": "${workspaceFolder}",
+                "tag": "test:latest"
+            }
+        },
+        {
+            "label": "run project",
+            "type": "docker-run",
+            "dockerRun": {
+                "image": "test:latest",
+                "ports": [{
+                    "containerPort": 8000,
+                    "hostPort": 8000
+                }],
+                "volumes": [{
+                    "containerPath": "/var/www/db",
+                    "localPath": "/var/lib/docker/volumes/flasking_around/_data"
+                }]
+            }
+        },
+    ]
+}
