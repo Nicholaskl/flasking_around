@@ -11,4 +11,5 @@ RUN pip3 install -r /var/www/requirements.txt
 
 ENV FLASK_APP=app
 EXPOSE 8000
-CMD flask --app /var/www/app run --host 0.0.0.0 --port 8000
+# CMD flask run
+CMD python /var/www/app.py

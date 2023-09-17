@@ -1,0 +1,97 @@
+openapi: 3.0.0
+info:
+  title: "Flasking Around API"
+  description: "Some sort of API for cool stuff yay"
+  version: "1.0.0"
+
+servers:
+  - url: "/api"
+
+components:
+  schemas:
+    Transaction:
+      type: "object"
+      required:
+        - date
+        - desc
+        - cost
+      properties:
+        date:
+          type: "string"
+        desc:
+          type: "string"
+        cost:
+          type: "string"
+  parameters:
+    id:
+      name: "id"
+      description: "The id is the hashed transaction"
+      in: path
+      required: True
+      schema:
+        type: "string"
+
+paths:
+  /transactions:
+    get:
+      operationId: "transactions.read_all"
+      tags:
+        - "Transactions"
+      summary: "Read the list of transactions"
+      responses:
+        "200":
+          description: "Successfully read transaction list"
+  /transactions/add:
+    post:
+      operationId: "transactions.add"
+      tags:
+        - "Transactions"
+      summary: "Add transactions"
+      requestBody:
+          description: "Transactions to add"
+          required: True
+          content:
+            application/json:
+              schema:
+                x-body-name: "transaction"
+                $ref: "#/components/schemas/Transaction"
+      responses:
+        "201":
+          description: "Successfully added transaction"
+  /transactions/{id}:
+    get:
+      operationId: "transactions.read_one"
+      tags:
+        - "Transactions"
+      summary: "Read one transaction"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: "Successfully read transaction"
+    put:
+      tags:
+        - "Transactions"
+      operationId: "transactions.update"
+      summary: "Update a transaction"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: "Successfully updated transaction"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              x-body-name: "transaction"
+              $ref: "#/components/schemas/Transaction"
+    delete:
+      tags:
+        - "Transactions"
+      operationId: "transactions.delete"
+      summary: "Delete a transaction"
+      parameters:
+        - $ref: "#/components/parameters/id"
+      responses:
+        "204":
+          description: "Successfully deleted transaction"
