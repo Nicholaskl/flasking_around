@@ -15,12 +15,15 @@ components:
         - date
         - desc
         - cost
+        - balance
       properties:
         date:
           type: "string"
         desc:
           type: "string"
         cost:
+          type: "string"
+        balance:
           type: "string"
   parameters:
     id:

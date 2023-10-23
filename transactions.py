@@ -1,72 +1,68 @@
-from datetime import datetime
+from config import db
 from flask import abort, make_response
+from models import Transaction, transaction_schema, transactions_schema
 
 
-def get_timestamp():
-    return datetime.now().strftime(("%Y-%m-%d %H:%M:%S"))
-
-
-TRANSACTIONS = {
-    "0": {
-        "date": datetime.strptime("01/01/2000", "%d/%m/%Y"),
-        "desc": "Beem it",
-        "cost": "-69.42",
-    }
-}
+# def get_timestamp():
+#     return datetime.now().strftime(("%Y-%m-%d %H:%M:%S"))
 
 
 def read_all():
-    return list(TRANSACTIONS.values())
+    transactions = Transaction.query.all()
+    return transactions_schema.dump(transactions)
 
 
 def add(transaction):
     date = transaction.get("date")
     desc = transaction.get("desc")
     cost = transaction.get("cost")
-    transaction_hash = hash((date, desc, cost))
+    balance = transaction.get("balance")
 
-    if transaction_hash not in TRANSACTIONS:
-        TRANSACTIONS[transaction_hash] = {
-            "date": date,
-            "desc": desc,
-            "cost": cost,
-        }
+    existing_transaction = Transaction.query.filter(
+        Transaction.date == date,
+        Transaction.desc == desc,
+        Transaction.cost == cost,
+        Transaction.balance == balance,
+    ).one_or_none()
 
-        return make_response(
-            f"{transaction} successfully added with id {transaction_hash}", 201
-        )
-
+    if existing_transaction is None:
+        new_transaction = transaction_schema.load(transaction, session=db.session)
+        db.session.add(new_transaction)
+        db.session.commit()
+        return transaction_schema.dump(new_transaction), 201
     else:
-        abort(
-            406,
-            f"Transaction with id {transaction_hash} already exists",
-        )
+        abort(406, f"Transaction with those details already exists")
 
 
 def read_one(id):
-    if id in TRANSACTIONS:
-        return TRANSACTIONS[id]
+    # person = Person.query.filter(Person.lname == lname).one_or_none()
+    transaction = Transaction.query.filter(Transaction.id == id).one_or_none()
+
+    if transaction is not None:
+        return transaction_schema.dump(transaction)
     else:
-        abort(404, f"Transaction with id {id} not found")
+        abort(404, f"Transcation with the id: {id} was not found")
 
 
 def update(id, transaction):
-    date = transaction.get("date")
-    desc = transaction.get("desc")
-    cost = transaction.get("cost")
+    existing_transaction = Transaction.query.filter(Transaction.id == id).one_or_none()
 
-    if id in TRANSACTIONS:
-        TRANSACTIONS[id]["date"] = date
-        TRANSACTIONS[id]["desc"] = desc
-        TRANSACTIONS[id]["cost"] = cost
-        return TRANSACTIONS[id]
+    if existing_transaction:
+        update_transaction = transaction_schema.load(transaction, session=db.session)
+        existing_transaction.fname = update_transaction.fname
+        db.session.merge(existing_transaction)
+        db.session.commit()
+        return transaction_schema.dump(existing_transaction), 201
     else:
-        abort(404, f"Transaction with id {id} not found")
+        abort(404, f"Transaction with the id: {id} not found")
 
 
 def delete(id):
-    if id in TRANSACTIONS:
-        del TRANSACTIONS[id]
+    existing_transaction = Transaction.query.filter(Transaction.id == id).one_or_none()
+
+    if existing_transaction:
+        db.session.delete(existing_transaction)
+        db.session.commit()
         return make_response(f"{id} successfully deleted", 200)
     else:
-        abort(404, f"Transaction with id {id} not found")
+        abort(404, f"Transaction with the id: {id} not found")
