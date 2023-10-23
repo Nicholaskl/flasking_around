@@ -12,6 +12,17 @@ def read_all():
     return transactions_schema.dump(transactions)
 
 
+def clear():
+    transcations = Transaction.query.all()
+    for transaction in transcations:
+        db.session.delete(transaction)
+
+    db.session.commit()
+    return make_response(f"Database was cleared", 200)
+    # else:
+    #     abort(404, f"Databse already clear")
+
+
 def add(transaction):
     print(type(transaction))
     date = transaction.get("date")
