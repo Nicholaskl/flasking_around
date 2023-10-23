@@ -98,3 +98,20 @@ paths:
       responses:
         "204":
           description: "Successfully deleted transaction"
+  /upload:
+    post:
+      operationId: "upload.upload_file"
+      tags:
+        - "Upload"
+      summary: "Upload csv"
+      requestBody:
+        description: .csv file 
+        content:
+          application/csv:
+            schema:
+              x-body-name: "file"
+              type: string
+              format: base64
+      responses:
+        "201":
+          description: "Successfully uploaded"

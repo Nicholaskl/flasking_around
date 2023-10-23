@@ -13,6 +13,7 @@ def read_all():
 
 
 def add(transaction):
+    print(type(transaction))
     date = transaction.get("date")
     desc = transaction.get("desc")
     cost = transaction.get("cost")
