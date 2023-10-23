@@ -61,6 +61,15 @@ paths:
       responses:
         "201":
           description: "Successfully added transaction"
+  /transcations/clear:
+    get:
+      operationId: "transactions.clear"
+      tags:
+        - "Transactions"
+      summary: "Clear all of the transactions in the database"
+      responses:
+        "200":
+          description: "Successfully cleared all transactions from the database"
   /transactions/{id}:
     get:
       operationId: "transactions.read_one"

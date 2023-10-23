@@ -7,9 +7,12 @@ import pandas as pd
 
 
 def upload_file(file):
+    # convert from byte string to the dataframe
     col_names = ["date", "cost", "desc", "balance"]
-    df = pd.read_csv(BytesIO(file))
+    df = pd.read_csv(BytesIO(file), names=col_names, header=None)
 
+    # naive front and back check to see that the transaction ranges don't already
+    # exist... This is stupid because the middle part could be... anyways.
     date = df["date"].iloc[0]
     desc = df["desc"].iloc[0]
     cost = df["cost"].iloc[0]
