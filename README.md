@@ -19,3 +19,19 @@ docker run -p 127.0.0.1:8000:8000 test:latest
 - **Flask**: This is the actual API package that is the backbone of the app itself
 - **Pandas**: I'll be using this ot perform dat related tasks
 - **SQLAlchemy**: Abstracts SQL queries so I don't have to use them raw - it's an ORM 😋
+
+## Database(s)
+
+### Transactions
+
+This database contains information with every entry being the different transactions that have occurred. Currently the table looks like the following:
+
+| Column Name | Data Type  | Extra       |
+| ----------- | ---------- | ----------- |
+| id          | INT        | Primary Key |
+| date        | String(32) |             |
+| desc        | String(32) |             |
+| cost        | Float      |             |
+| balance     | Float      |             |
+
+Todo: I kinda also want to be able to relate different accounts and different pull apart the details of the payment to grab things such as categories and all that.... somehow.
