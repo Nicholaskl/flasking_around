@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
 
     return ScaffoldPage.scrollable(
       header: PageHeader(
-        title: const Text('Fluent UI for Flutter Showcase App'),
+        title: const Text('Home Screen'),
         commandBar: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
           Link(
             uri: Uri.parse('https://github.com/bdlukaa/fluent_ui'),
