@@ -14,6 +14,11 @@ And then we'll need to run it:
 docker run -p 127.0.0.1:8000:8000 test:latest
 ```
 
+In order to run the frontend you will need to spin up the flutter stuff:
+```zsh
+flutter run -d chrome --web-browser-flag "--disable-web-security"
+```
+
 ## Dependent packages
 
 - **Flask**: This is the actual API package that is the backbone of the app itself

@@ -1,6 +1,6 @@
 class TransactionItem{
-  String balance;
-  String cost;
+  double balance;
+  double cost;
   String date;
   String desc;
 

@@ -1,7 +1,10 @@
+import 'package:flutter_flasking_around/providers/transaction_provider.dart';
 import 'package:flutter_flasking_around/screens/home.dart';
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
+import 'package:flutter_flasking_around/screens/transactions_page.dart';
+import 'package:flutter_flasking_around/widgets/transactions.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:system_theme/system_theme.dart';
@@ -60,37 +63,41 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: _appTheme,
-      builder: (context, child) {
-        final appTheme = context.watch<AppTheme>();
-        return FluentApp.router(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AppTheme()),
+        ChangeNotifierProvider(create: (context) => TransactionProvider()),
+      ],
+      // value: _appTheme,
+      // builder: (context, child) {
+      //   final appTheme = context.watch<AppTheme>();
+        child: FluentApp.router(
           title: appTitle,
-          themeMode: appTheme.mode,
+          themeMode: _appTheme.mode,
           debugShowCheckedModeBanner: false,
-          color: appTheme.color,
+          color: _appTheme.color,
           darkTheme: FluentThemeData(
             brightness: Brightness.dark,
-            accentColor: appTheme.color,
+            accentColor: _appTheme.color,
             visualDensity: VisualDensity.standard,
             focusTheme: FocusThemeData(
               glowFactor: is10footScreen(context) ? 2.0 : 0.0,
             ),
           ),
           theme: FluentThemeData(
-            accentColor: appTheme.color,
+            accentColor: _appTheme.color,
             visualDensity: VisualDensity.standard,
             focusTheme: FocusThemeData(
               glowFactor: is10footScreen(context) ? 2.0 : 0.0,
             ),
           ),
-          locale: appTheme.locale,
+          locale: _appTheme.locale,
           builder: (context, child) {
             return Directionality(
-              textDirection: appTheme.textDirection,
+              textDirection: _appTheme.textDirection,
               child: NavigationPaneTheme(
                 data: NavigationPaneThemeData(
-                  backgroundColor: appTheme.windowEffect !=
+                  backgroundColor: _appTheme.windowEffect !=
                           flutter_acrylic.WindowEffect.disabled
                       ? Colors.transparent
                       : null,
@@ -102,9 +109,8 @@ class MyApp extends StatelessWidget {
           routeInformationParser: router.routeInformationParser,
           routerDelegate: router.routerDelegate,
           routeInformationProvider: router.routeInformationProvider,
-        );
-      },
-    );
+        )
+      );
   }
 }
 
@@ -141,9 +147,9 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
     ),
     PaneItemHeader(header: const Text('Other')),
     PaneItem(
-      key: const ValueKey('/inputs/buttons'),
+      key: const ValueKey('/transactions'),
       icon: const Icon(FluentIcons.table_header_row),
-      title: const Text('Data'),
+      title: const Text('Transactions'),
       body: const SizedBox.shrink(),
     ),
     // TODO: Scrollbar, RatingBar
@@ -499,6 +505,7 @@ final router = GoRouter(navigatorKey: rootNavigatorKey, routes: [
     routes: [
       /// Home
       GoRoute(path: '/', builder: (context, state) => const HomePage()),
+      GoRoute(path: '/transactions', builder: (context, state) => const TransactionsPage())
     ],
   ),
 ]);
