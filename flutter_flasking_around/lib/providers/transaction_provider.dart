@@ -6,7 +6,7 @@ import "package:http/http.dart" as http;
 
 class TransactionProvider with ChangeNotifier{
   List<TransactionItem> _items = [];
-  final url = "http://localhost:5000/transactions";
+  final url = "http://localhost:8000/api/transactions";
 
   List<TransactionItem> get items {
     return [..._items];
@@ -16,7 +16,8 @@ class TransactionProvider with ChangeNotifier{
     var response;
 
     try {
-      response = await http.get(Uri.parse(url));
+      // response = await http.get(Uri.parse(url));
+      response = await http.get(Uri.http("localhost:8000", "/api/transactions"));
       List<dynamic> body = json.decode(response.body);
       _items = body.map((e) => TransactionItem(balance: e["balance"], cost: e["cost"], date: e["date"], desc: e["desc"])).toList();
     } catch(e){
