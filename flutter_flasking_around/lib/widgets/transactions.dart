@@ -18,8 +18,8 @@ class _TransactionsWidgetState extends State<TransactionsWidget> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0), 
-      child: Column(
-        children: [
+      child: Container(
+        child: 
           FutureBuilder(
             future: Provider.of<TransactionProvider>(context, listen: false).getTransactions, 
             builder: (ctx, snapshot) => 
@@ -43,7 +43,20 @@ class _TransactionsWidgetState extends State<TransactionsWidget> {
                       padding: const EdgeInsets.only(bottom: 10.0),
                       child: ListTile(
                         // tileColor: Colors.black,
-                        title: Text(transactionProvider.items[i].desc),
+                        // title: Text(transactionProvider.items[i].desc),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              transactionProvider.items[i].date,
+                              textAlign: TextAlign.left,
+                            ),
+                            Text(
+                              transactionProvider.items[i].desc,
+                              textAlign: TextAlign.left,
+                            )
+                            ],
+                          ),
                         onPressed: () {},
                       )
                       ),
@@ -52,7 +65,6 @@ class _TransactionsWidgetState extends State<TransactionsWidget> {
               ),
               )
           )
-        ]
       ),
     );
   }
