@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart' hide Page;
+import 'package:fluent_ui/fluent_ui.dart' hide Page, Colors;
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
@@ -17,6 +17,9 @@ class _TransactionsWidgetState extends State<TransactionsWidget> {
 
   DataRow _formatResults(index, data){
     return DataRow(
+      color: data.cost > 0.0 
+        ? MaterialStateColor.resolveWith((states) => Colors.green) 
+        : MaterialStateColor.resolveWith((states) => Colors.red),
       cells: <DataCell>[
         DataCell(
           Text(
