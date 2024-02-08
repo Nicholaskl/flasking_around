@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
+import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
 import "package:flutter_flasking_around/providers/transaction_provider.dart";
@@ -14,18 +15,44 @@ class _TransactionsWidgetState extends State<TransactionsWidget> {
   // Might not need this lols
   TextEditingController newTaskController = TextEditingController();
 
+  DataRow _formatResults(index, data){
+    return DataRow(
+      cells: <DataCell>[
+        DataCell(
+          Text(
+            data.date,
+          ),
+        ), //add name of your columns here
+        DataCell(
+          Text(
+            data.cost.toString(),
+          ),
+        ),
+        DataCell(
+          Text(
+            data.desc,
+          ),
+        ),
+        DataCell(
+          Text(
+            data.balance.toString(),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0), 
       child: Container(
-        child: 
-          FutureBuilder(
-            future: Provider.of<TransactionProvider>(context, listen: false).getTransactions, 
+        child: FutureBuilder(
+          future: Provider.of<TransactionProvider>(context, listen: false).getTransactions, 
             builder: (ctx, snapshot) => 
             snapshot.connectionState == ConnectionState.waiting 
             ? Center(child: ProgressRing())
-            :
+            : 
             Consumer<TransactionProvider>(
               child: Center(
                 heightFactor:  MediaQuery.of(context).size.height * 0.03,
@@ -35,37 +62,54 @@ class _TransactionsWidgetState extends State<TransactionsWidget> {
               ? child as Widget
               : Padding(
                 padding: const EdgeInsets.only(top: 20),
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.6,
-                  child: ListView.builder(
-                    itemCount: transactionProvider.items.length,
-                    itemBuilder: (ctx, i) => Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: ListTile(
-                        // tileColor: Colors.black,
-                        // title: Text(transactionProvider.items[i].desc),
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              transactionProvider.items[i].date,
-                              textAlign: TextAlign.left,
-                            ),
-                            Text(
-                              transactionProvider.items[i].desc,
-                              textAlign: TextAlign.left,
-                            )
-                            ],
-                          ),
-                        onPressed: () {},
-                      )
+                child: DataTable(
+                columns: const [
+                  DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Date',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Cost',
+                        style: TextStyle(fontStyle: FontStyle.italic),
                       ),
                     ),
-                )
-              ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Description',
+                        style: TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Text(
+                        'Remaining balance',
+                        style: TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                    ),
+                  ),
+                ],
+                // ignore: avoid_print
+                rows: List.generate(
+                  transactionProvider.items.length,
+                  (index) => _formatResults(
+                    index,
+                    transactionProvider.items[index],
+                  ),
+                ),
               )
+            )
           )
-      ),
+        )
+      )
     );
   }
 }
