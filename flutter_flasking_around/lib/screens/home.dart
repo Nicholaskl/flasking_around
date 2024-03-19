@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasFluentTheme(context));
-    final theme = FluentTheme.of(context);
+    // final theme = FluentTheme.of(context);
 
     return ScaffoldPage.scrollable(
       header: PageHeader(

@@ -18,7 +18,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasFluentTheme(context));
-    final theme = FluentTheme.of(context);
+    // final theme = FluentTheme.of(context);
 
     return ScaffoldPage.scrollable(
       header: PageHeader(

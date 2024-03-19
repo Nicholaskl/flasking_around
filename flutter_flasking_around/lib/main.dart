@@ -68,36 +68,35 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AppTheme()),
         ChangeNotifierProvider(create: (context) => TransactionProvider()),
       ],
-      // value: _appTheme,
-      // builder: (context, child) {
-      //   final appTheme = context.watch<AppTheme>();
-        child: FluentApp.router(
+      builder: (context, child) {
+        final appTheme = context.watch<AppTheme>();
+        return FluentApp.router(
           title: appTitle,
-          themeMode: _appTheme.mode,
+          themeMode: appTheme.mode,
           debugShowCheckedModeBanner: false,
-          color: _appTheme.color,
+          color: appTheme.color,
           darkTheme: FluentThemeData(
             brightness: Brightness.dark,
-            accentColor: _appTheme.color,
+            accentColor: appTheme.color,
             visualDensity: VisualDensity.standard,
             focusTheme: FocusThemeData(
               glowFactor: is10footScreen(context) ? 2.0 : 0.0,
             ),
           ),
           theme: FluentThemeData(
-            accentColor: _appTheme.color,
+            accentColor: appTheme.color,
             visualDensity: VisualDensity.standard,
             focusTheme: FocusThemeData(
               glowFactor: is10footScreen(context) ? 2.0 : 0.0,
             ),
           ),
-          locale: _appTheme.locale,
+          locale: appTheme.locale,
           builder: (context, child) {
             return Directionality(
-              textDirection: _appTheme.textDirection,
+              textDirection: appTheme.textDirection,
               child: NavigationPaneTheme(
                 data: NavigationPaneThemeData(
-                  backgroundColor: _appTheme.windowEffect !=
+                  backgroundColor: appTheme.windowEffect !=
                           flutter_acrylic.WindowEffect.disabled
                       ? Colors.transparent
                       : null,
@@ -109,7 +108,8 @@ class MyApp extends StatelessWidget {
           routeInformationParser: router.routeInformationParser,
           routerDelegate: router.routerDelegate,
           routeInformationProvider: router.routeInformationProvider,
-        )
+        );
+      },
       );
   }
 }
