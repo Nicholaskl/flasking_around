@@ -9,10 +9,6 @@ class TransactionsWidget extends StatefulWidget{
 
   @override
   State<TransactionsWidget> createState() => _TransactionsWidgetState();
-
-  void submit(String text){
-    print(text);
-  }
 }
 
 class _TransactionsWidgetState extends State<TransactionsWidget> {
@@ -21,16 +17,15 @@ class _TransactionsWidgetState extends State<TransactionsWidget> {
   // final DateFormat formatter = DateFormat('dd/mm/yyyy');
 
   PlutoRow _formatResults(index, data){
-    // print(data.date);
     List split = data.date.split("/");
     String format_date = "${split[2]}-${split[1]}-${split[0]}";
-    // print(format_date);
 
     return PlutoRow(
       // color: data.cost > 0.0 
       //   ? MaterialStateColor.resolveWith((states) => Colors.green) 
       //   : MaterialStateColor.resolveWith((states) => Colors.red),
       cells: {
+        'accounts_field': PlutoCell(value: data.accounts),
         'date_field': PlutoCell(value: format_date),
         'cost_field': PlutoCell(value: data.cost),
         'desc_field': PlutoCell(value: data.desc),
@@ -63,6 +58,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget> {
                   child: PlutoGrid(
                     mode: PlutoGridMode.readOnly,
                   columns:  [
+                    PlutoColumn(title: 'Accounts', field: 'accounts_field', type: PlutoColumnType.number()),
                     PlutoColumn(title: 'Date', field: 'date_field', type: PlutoColumnType.date()),
                     PlutoColumn(title: 'Cost', field: 'cost_field', type: PlutoColumnType.number()),
                     PlutoColumn(title: 'Description', field: 'desc_field', type: PlutoColumnType.text()),
