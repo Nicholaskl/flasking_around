@@ -1,6 +1,6 @@
 import 'package:flutter_flasking_around/providers/transaction_provider.dart';
 import 'package:flutter_flasking_around/screens/home.dart';
-import 'package:fluent_ui/fluent_ui.dart' hide Page;
+import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:flutter_flasking_around/screens/transactions_page.dart';
@@ -13,7 +13,7 @@ import 'package:window_manager/window_manager.dart';
 
 import 'theme.dart';
 
-const String appTitle = 'Win UI for Flutter';
+const String appTitle = 'Nickyyy';
 
 /// Checks if the current environment is a desktop environment.
 bool get isDesktop {
@@ -70,44 +70,45 @@ class MyApp extends StatelessWidget {
       ],
       builder: (context, child) {
         final appTheme = context.watch<AppTheme>();
-        return FluentApp.router(
+        return MaterialApp.router(
           title: appTitle,
           themeMode: appTheme.mode,
           debugShowCheckedModeBanner: false,
           color: appTheme.color,
-          darkTheme: FluentThemeData(
+          darkTheme: ThemeData(
             brightness: Brightness.dark,
-            accentColor: appTheme.color,
+            // accentColor: appTheme.color,
             visualDensity: VisualDensity.standard,
-            focusTheme: FocusThemeData(
-              glowFactor: is10footScreen(context) ? 2.0 : 0.0,
-            ),
+            // focusTheme: FocusThemeData(
+            //   glowFactor: is10footScreen(context) ? 2.0 : 0.0,
+            // ),
           ),
-          theme: FluentThemeData(
-            accentColor: appTheme.color,
+          theme: ThemeData(
+            // accentColor: appTheme.color,
             visualDensity: VisualDensity.standard,
-            focusTheme: FocusThemeData(
-              glowFactor: is10footScreen(context) ? 2.0 : 0.0,
-            ),
+            // focusTheme: FocusThemeData(
+            //   glowFactor: is10footScreen(context) ? 2.0 : 0.0,
+            // ),
           ),
           locale: appTheme.locale,
           builder: (context, child) {
             return Directionality(
               textDirection: appTheme.textDirection,
-              child: NavigationPaneTheme(
-                data: NavigationPaneThemeData(
+              child: Theme(
+                data: ThemeData(
                   backgroundColor: appTheme.windowEffect !=
                           flutter_acrylic.WindowEffect.disabled
-                      ? Colors.transparent
+                      ? const Color.fromRGBO(255, 255, 255, 0.0)
                       : null,
                 ),
                 child: child!,
               ),
             );
           },
-          routeInformationParser: router.routeInformationParser,
-          routerDelegate: router.routerDelegate,
-          routeInformationProvider: router.routeInformationProvider,
+          routerConfig: router,
+          // routeInformationParser: router.routeInformationParser,
+          // routerDelegate: router.routerDelegate,
+          // routeInformationProvider: router.routeInformationProvider,
         );
       },
       );
@@ -138,60 +139,6 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
   final searchFocusNode = FocusNode();
   final searchController = TextEditingController();
 
-  late final List<NavigationPaneItem> originalItems = [
-    PaneItem(
-      key: const ValueKey('/'),
-      icon: const Icon(FluentIcons.home),
-      title: const Text('Home'),
-      body: const SizedBox.shrink(),
-    ),
-    PaneItemHeader(header: const Text('Other')),
-    PaneItem(
-      key: const ValueKey('/transactions'),
-      icon: const Icon(FluentIcons.table_header_row),
-      title: const Text('Transactions'),
-      body: const SizedBox.shrink(),
-    ),
-    // TODO: Scrollbar, RatingBar
-  ].map((e) {
-    if (e is PaneItem) {
-      return PaneItem(
-        key: e.key,
-        icon: e.icon,
-        title: e.title,
-        body: e.body,
-        onTap: () {
-          final path = (e.key as ValueKey).value;
-          if (GoRouterState.of(context).uri.toString() != path) {
-            context.go(path);
-          }
-          e.onTap?.call();
-        },
-      );
-    }
-    return e;
-  }).toList();
-  late final List<NavigationPaneItem> footerItems = [
-    PaneItemSeparator(),
-    PaneItem(
-      key: const ValueKey('/settings'),
-      icon: const Icon(FluentIcons.settings),
-      title: const Text('Settings'),
-      body: const SizedBox.shrink(),
-      onTap: () {
-        if (GoRouterState.of(context).uri.toString() != '/settings') {
-          context.go('/settings');
-        }
-      },
-    ),
-    _LinkPaneItemAction(
-      icon: const Icon(FluentIcons.open_source),
-      title: const Text('Source code'),
-      link: 'https://github.com/bdlukaa/fluent_ui',
-      body: const SizedBox.shrink(),
-    ),
-  ];
-
   @override
   void initState() {
     windowManager.addListener(this);
@@ -206,306 +153,108 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
     super.dispose();
   }
 
-  int _calculateSelectedIndex(BuildContext context) {
-    final location = GoRouterState.of(context).uri.toString();
-    int indexOriginal = originalItems
-        .where((item) => item.key != null)
-        .toList()
-        .indexWhere((item) => item.key == Key(location));
-
-    if (indexOriginal == -1) {
-      int indexFooter = footerItems
-          .where((element) => element.key != null)
-          .toList()
-          .indexWhere((element) => element.key == Key(location));
-      if (indexFooter == -1) {
-        return 0;
-      }
-      return originalItems
-              .where((element) => element.key != null)
-              .toList()
-              .length +
-          indexFooter;
-    } else {
-      return indexOriginal;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final localizations = FluentLocalizations.of(context);
+    // final localizations = FluentLocalizations.of(context);
 
     final appTheme = context.watch<AppTheme>();
-    final theme = FluentTheme.of(context);
-    if (widget.shellContext != null) {
-      if (router.canPop() == false) {
-        setState(() {});
-      }
-    }
-    return NavigationView(
-      key: viewKey,
-      appBar: NavigationAppBar(
-        automaticallyImplyLeading: false,
-        leading: () {
-          final enabled = widget.shellContext != null && router.canPop();
+    final theme = Theme.of(context);
+    // if (widget.shellContext != null) {
+    //   if (router.canPop() == false) {
+    //     setState(() {});
+    //     print("MEOW");
+    //   }
+    // }
 
-          final onPressed = enabled
-              ? () {
-                  if (router.canPop()) {
-                    context.pop();
-                    setState(() {});
-                  }
-                }
-              : null;
-          return NavigationPaneTheme(
-            data: NavigationPaneTheme.of(context).merge(NavigationPaneThemeData(
-              unselectedIconColor: ButtonState.resolveWith((states) {
-                if (states.isDisabled) {
-                  return ButtonThemeData.buttonColor(context, states);
-                }
-                return ButtonThemeData.uncheckedInputColor(
-                  FluentTheme.of(context),
-                  states,
-                ).basedOnLuminance();
-              }),
-            )),
-            child: Builder(
-              builder: (context) => PaneItem(
-                icon: const Center(child: Icon(FluentIcons.back, size: 12.0)),
-                title: Text(localizations.backButtonTooltip),
-                body: const SizedBox.shrink(),
-                enabled: enabled,
-              ).build(
-                context,
-                false,
-                onPressed,
-                displayMode: PaneDisplayMode.compact,
-              ),
-            ),
-          );
-        }(),
-        title: () {
-          if (kIsWeb) {
-            return const Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: Text(appTitle),
-            );
-          }
-          return const DragToMoveArea(
-            child: Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: Text(appTitle),
-            ),
-          );
-        }(),
-        actions: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-          Align(
-            alignment: AlignmentDirectional.centerEnd,
-            child: Padding(
-              padding: const EdgeInsetsDirectional.only(end: 8.0),
-              child: ToggleSwitch(
-                content: const Text('Dark Mode'),
-                checked: FluentTheme.of(context).brightness.isDark,
-                onChanged: (v) {
-                  if (v) {
-                    appTheme.mode = ThemeMode.dark;
-                  } else {
-                    appTheme.mode = ThemeMode.light;
-                  }
-                },
-              ),
-            ),
+    return Scaffold(
+      body: Row(
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 200),
+            child: NavDrawer()
           ),
-          if (!kIsWeb) const WindowButtons(),
-        ]),
-      ),
-      paneBodyBuilder: (item, child) {
-        final name =
-            item?.key is ValueKey ? (item!.key as ValueKey).value : null;
-        return FocusTraversalGroup(
-          key: ValueKey('body$name'),
-          child: widget.child,
-        );
-      },
-      pane: NavigationPane(
-        selected: _calculateSelectedIndex(context),
-        header: SizedBox(
-          height: kOneLineTileHeight,
-          child: ShaderMask(
-            shaderCallback: (rect) {
-              final color = appTheme.color.defaultBrushFor(
-                theme.brightness,
-              );
-              return LinearGradient(
-                colors: [
-                  color,
-                  color,
-                ],
-              ).createShader(rect);
-            },
-            child: const FlutterLogo(
-              style: FlutterLogoStyle.horizontal,
-              size: 80.0,
-              textColor: Colors.white,
-              duration: Duration.zero,
-            ),
+          Flexible(
+            child: widget.child,
           ),
-        ),
-        displayMode: appTheme.displayMode,
-        indicator: () {
-          switch (appTheme.indicator) {
-            case NavigationIndicators.end:
-              return const EndNavigationIndicator();
-            case NavigationIndicators.sticky:
-            default:
-              return const StickyNavigationIndicator();
-          }
-        }(),
-        items: originalItems,
-        autoSuggestBox: Builder(builder: (context) {
-          return AutoSuggestBox(
-            key: searchKey,
-            focusNode: searchFocusNode,
-            controller: searchController,
-            unfocusedColor: Colors.transparent,
-            items: originalItems.whereType<PaneItem>().map((item) {
-              assert(item.title is Text);
-              final text = (item.title as Text).data!;
-              return AutoSuggestBoxItem(
-                label: text,
-                value: text,
-                onSelected: () {
-                  item.onTap?.call();
-                  searchController.clear();
-                  searchFocusNode.unfocus();
-                  final view = NavigationView.of(context);
-                  if (view.compactOverlayOpen) {
-                    view.compactOverlayOpen = false;
-                  } else if (view.minimalPaneOpen) {
-                    view.minimalPaneOpen = false;
-                  }
-                },
-              );
-            }).toList(),
-            trailingIcon: IgnorePointer(
-              child: IconButton(
-                onPressed: () {},
-                icon: const Icon(FluentIcons.search),
-              ),
-            ),
-            placeholder: 'Search',
-          );
-        }),
-        autoSuggestBoxReplacement: const Icon(FluentIcons.search),
-        footerItems: footerItems,
-      ),
-      onOpenSearch: searchFocusNode.requestFocus,
+      ],
+      )
     );
+
   }
 
-  @override
-  void onWindowClose() async {
-    bool isPreventClose = await windowManager.isPreventClose();
-    if (isPreventClose && mounted) {
-      showDialog(
-        context: context,
-        builder: (_) {
-          return ContentDialog(
-            title: const Text('Confirm close'),
-            content: const Text('Are you sure you want to close this window?'),
-            actions: [
-              FilledButton(
-                child: const Text('Yes'),
-                onPressed: () {
-                  Navigator.pop(context);
-                  windowManager.destroy();
-                },
-              ),
-              Button(
-                child: const Text('No'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
 }
 
-class WindowButtons extends StatelessWidget {
-  const WindowButtons({super.key});
+class NavDrawer extends StatelessWidget{
+  const NavDrawer({Key? key}) : super(key : key);
 
   @override
   Widget build(BuildContext context) {
-    final FluentThemeData theme = FluentTheme.of(context);
-
-    return SizedBox(
-      width: 138,
-      height: 50,
-      child: WindowCaption(
-        brightness: theme.brightness,
-        backgroundColor: Colors.transparent,
-      ),
-    );
-  }
-}
-
-class _LinkPaneItemAction extends PaneItem {
-  _LinkPaneItemAction({
-    required super.icon,
-    required this.link,
-    required super.body,
-    super.title,
-  });
-
-  final String link;
-
-  @override
-  Widget build(
-    BuildContext context,
-    bool selected,
-    VoidCallback? onPressed, {
-    PaneDisplayMode? displayMode,
-    bool showTextOnTop = true,
-    bool? autofocus,
-    int? itemIndex,
-  }) {
-    return Link(
-      uri: Uri.parse(link),
-      builder: (context, followLink) => Semantics(
-        link: true,
-        child: super.build(
-          context,
-          selected,
-          followLink,
-          displayMode: displayMode,
-          showTextOnTop: showTextOnTop,
-          itemIndex: itemIndex,
-          autofocus: autofocus,
+    return Container(
+        color: Colors.grey[200],
+        child: Column(
+          children: [
+            Text("Hi there Nicholas"),
+            buildHeader(context),
+            buildMenuItems(context)
+          ],
         ),
-      ),
-    );
+      );
   }
+
+    Widget buildHeader(BuildContext context) => Container(
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top,
+      )
+    );
+
+    Widget buildMenuItems(BuildContext context) => Container(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          TextButton(
+            child: Row(
+              children: [
+                Icon(Icons.home),
+                Text("Home")
+              ],
+            ),
+            onPressed: () => context.go('/')
+          ),
+          TextButton(
+            child: Row(
+              children: [
+                Icon(Icons.table_chart),
+                Text("Transactions")
+              ],
+            ),
+            onPressed: () {context.go('/transactions');},
+          )
+        ],
+      )
+    );
+  
 }
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
-final router = GoRouter(navigatorKey: rootNavigatorKey, routes: [
-  ShellRoute(
-    navigatorKey: _shellNavigatorKey,
-    builder: (context, state, child) {
-      return MyHomePage(
-        shellContext: _shellNavigatorKey.currentContext,
-        child: child,
-      );
-    },
-    routes: [
-      /// Home
-      GoRoute(path: '/', builder: (context, state) => const HomePage()),
-      GoRoute(path: '/transactions', builder: (context, state) => const TransactionsPage())
-    ],
-  ),
-]);
+final router = GoRouter(
+  navigatorKey: rootNavigatorKey, 
+  initialLocation: '/',
+  routes: [
+    ShellRoute(
+      navigatorKey: _shellNavigatorKey,
+      builder: (context, state, child) {
+        return MyHomePage(
+          shellContext: _shellNavigatorKey.currentContext,
+          child: child,
+        );
+      },
+      routes: [
+        /// Home
+        GoRoute(path: '/', builder: (context, state) => const HomePage()),
+        GoRoute(path: '/transactions', builder: (context, state) => const TransactionsPage())
+      ],
+    ),
+  ] 
+);

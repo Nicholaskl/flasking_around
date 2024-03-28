@@ -78,3 +78,13 @@ def delete(id):
         return make_response(f"{id} successfully deleted", 200)
     else:
         abort(404, f"Transaction with the id: {id} not found")
+
+
+def search_desc(desc):
+    # transactions = Transaction.desc.contains(desc).all()
+    transactions = Transaction.query.filter(Transaction.desc.contains(desc)).all()
+
+    if len(transactions) != 0:
+        return transactions_schema.dump(transactions)
+    else:
+        abort(404, f"Transcation with the id: {id} was not found")

@@ -27,4 +27,20 @@ class TransactionProvider with ChangeNotifier{
     }
     notifyListeners();
   }
+
+  Future<void> getFilteredTransactions(String searchTerm) async {
+    var response;
+
+    try {
+      // response = await http.get(Uri.parse(url));
+      response = await http.get(Uri.http("localhost:8000", "/api/transactions/search/$searchTerm"));
+      List<dynamic> body = json.decode(response.body);
+      _items = body.map((e) => TransactionItem(balance: e["balance"], cost: e["cost"], date: e["date"], desc: e["desc"])).toList();
+    } catch(e){
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+    notifyListeners();
+  }
 }
