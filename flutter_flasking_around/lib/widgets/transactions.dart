@@ -3,7 +3,6 @@ import "package:provider/provider.dart";
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:flutter/material.dart';
 import "package:flutter_flasking_around/providers/transaction_provider.dart";
-import 'package:intl/intl.dart';
 
 class TransactionsWidget extends StatefulWidget{
   const TransactionsWidget({Key? key}) : super(key: key);
