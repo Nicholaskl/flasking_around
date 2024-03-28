@@ -25,6 +25,9 @@ components:
           type: "string"
         balance:
           type: "string"
+    Account_List:
+      type: "array"
+
   parameters:
     id:
       name: "id"
@@ -169,3 +172,20 @@ paths:
       responses:
         "200":
           description: "Successfully read account information"
+  /accounts/getTransactions:
+    post:
+      operationId: "accounts.getTransactions"
+      tags:
+        - "Accounts"
+      summary: "Retrieve Transactions from account"
+      requestBody:
+          description: "Contain a list of accounts to retrieve transactions"
+          required: True
+          content:
+            application/json:
+              schema:
+                x-body-name: "account_list"
+                type: array
+      responses:
+        "201":
+          description: "Successfully retrieved transactions"
