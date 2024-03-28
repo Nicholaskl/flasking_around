@@ -40,6 +40,13 @@ components:
       required: True
       schema:
         type: string
+    account_id:
+      name: "account_id"
+      description: "The id for an account"
+      in: path
+      required: True
+      schema:
+        type: string
 
 paths:
   /transactions:
@@ -142,3 +149,23 @@ paths:
       responses:
         "201":
           description: "Successfully uploaded"
+  /accounts:
+    get:
+      operationId: "accounts.read_all"
+      tags:
+        - "Accounts"
+      summary: "Get list of all accounts"
+      responses:
+        "200":
+          description: "Successfully retrieved all accounts"
+  /accounts/{account_id}:
+    get:
+      operationId: "accounts.read_one"
+      tags:
+        - "Accounts"
+      summary: "Read data about an account"
+      parameters:
+        - $ref: "#/components/parameters/account_id"
+      responses:
+        "200":
+          description: "Successfully read account information"
