@@ -3,6 +3,7 @@ import "package:provider/provider.dart";
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:flutter/material.dart';
 import "package:flutter_flasking_around/providers/transaction_provider.dart";
+import 'package:intl/intl.dart';
 
 class TransactionsWidget extends StatefulWidget{
   const TransactionsWidget({Key? key}) : super(key: key);
@@ -18,40 +19,24 @@ class TransactionsWidget extends StatefulWidget{
 class _TransactionsWidgetState extends State<TransactionsWidget> {
   // Might not need this lols
   TextEditingController newTaskController = TextEditingController();
+  // final DateFormat formatter = DateFormat('dd/mm/yyyy');
 
   PlutoRow _formatResults(index, data){
+    // print(data.date);
+    List split = data.date.split("/");
+    String format_date = "${split[2]}-${split[1]}-${split[0]}";
+    // print(format_date);
+
     return PlutoRow(
       // color: data.cost > 0.0 
       //   ? MaterialStateColor.resolveWith((states) => Colors.green) 
       //   : MaterialStateColor.resolveWith((states) => Colors.red),
       cells: {
-        'date_field': PlutoCell(value: data.date),
+        'date_field': PlutoCell(value: format_date),
         'cost_field': PlutoCell(value: data.cost),
         'desc_field': PlutoCell(value: data.desc),
         'balance_field': PlutoCell(value: data.balance),
       }
-
-      //   DataCell(
-      //     Text(
-      //       data.date,
-      //     ),
-      //   ), //add name of your columns here
-      //   DataCell(
-      //     Text(
-      //       data.cost.toString(),
-      //     ),
-      //   ),
-      //   DataCell(
-      //     Text(
-      //       data.desc,
-      //     ),
-      //   ),
-      //   DataCell(
-      //     Text(
-      //       data.balance.toString(),
-      //     ),
-      //   ),
-      // ],
     );
   }
 
@@ -77,6 +62,7 @@ class _TransactionsWidgetState extends State<TransactionsWidget> {
                 padding: const EdgeInsets.only(top: 20),
                 child: Container(
                   child: PlutoGrid(
+                    mode: PlutoGridMode.readOnly,
                   columns:  [
                     PlutoColumn(title: 'Date', field: 'date_field', type: PlutoColumnType.date()),
                     PlutoColumn(title: 'Cost', field: 'cost_field', type: PlutoColumnType.number()),
