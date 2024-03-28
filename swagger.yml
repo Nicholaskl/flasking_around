@@ -32,7 +32,14 @@ components:
       in: path
       required: True
       schema:
-        type: "string"
+        type: string
+    desc:
+      name: "desc"
+      description: "the description of a transaction"
+      in: query 
+      required: True
+      schema:
+        type: string
 
 paths:
   /transactions:
@@ -61,7 +68,7 @@ paths:
       responses:
         "201":
           description: "Successfully added transaction"
-  /transcations/clear:
+  /transactions/clear:
     get:
       operationId: "transactions.clear"
       tags:
@@ -107,6 +114,17 @@ paths:
       responses:
         "204":
           description: "Successfully deleted transaction"
+  /transactions/search/{desc}:
+    get:
+      operationId: "transactions.search_desc"
+      tags:
+        - "Transactions"
+      summary: "Search for description"
+      parameters:
+        - $ref: "#/components/parameters/desc"
+      responses:
+        "200":
+          description: "Successfully returned matched descriptions"
   /upload:
     post:
       operationId: "upload.upload_file"
