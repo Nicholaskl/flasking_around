@@ -12,9 +12,9 @@ ACCOUNTS = [
         "bank_name": "CBA",
         "account_type": "Spending",
         "rel_transactions": [
-            ("2022-01-06 17:10:24", "Description number 1", 9.99, 10.25),
-            ("2022-03-05 22:17:54", "Description number 2", 63.26, 134.5),
-            ("2022-03-05 22:18:10", "Description number 3", 929.3, 1361.5),
+            ("06/01/2022", "Description number 1", 9.99, 10.25),
+            ("05/03/2022", "Description number 2", 63.26, 134.5),
+            ("05/03/2022", "Description number 3", 929.3, 1361.5),
             #         date = db.Column(db.String(32))
             # desc = db.Column(db.String(255))
             # cost = db.Column(db.Float)
@@ -26,8 +26,8 @@ ACCOUNTS = [
         "bank_name": "CBA",
         "account_type": "Saving",
         "rel_transactions": [
-            ("2022-01-04 17:10:24", "Description number 4", 246.2, 235.23),
-            ("2022-03-09 22:17:54", "Description number 5", 46.3, 46.2),
+            ("04/01/2022", "Description number 4", 246.2, 235.23),
+            ("09/03/2022", "Description number 5", 46.3, 46.2),
             #         date = db.Column(db.String(32))
             # desc = db.Column(db.String(255))
             # cost = db.Column(db.Float)
@@ -39,8 +39,8 @@ ACCOUNTS = [
         "bank_name": "Westpac",
         "account_type": "Spending",
         "rel_transactions": [
-            ("2022-01-06 17:10:24", "Description number 6", 26.2, 57.3),
-            ("2022-03-03 22:17:54", "Description number 7", 6458.4, 769.5),
+            ("06/01/2022", "Description number 6", 26.2, 57.3),
+            ("03/03/2022", "Description number 7", 6458.4, 769.5),
             #         date = db.Column(db.String(32))
             # desc = db.Column(db.String(255))
             # cost = db.Column(db.Float)
