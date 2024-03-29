@@ -3,6 +3,9 @@ import 'package:flutter_flasking_around/providers/transaction_provider.dart';
 import 'package:flutter_flasking_around/widgets/transactions.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/link.dart';
+import 'package:flutter_flasking_around/theme.dart';
+
+final _appTheme = AppTheme();
 
 class TransactionsPage extends StatefulWidget {
   const TransactionsPage({super.key});
@@ -23,31 +26,22 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
     TransactionsWidget table = TransactionsWidget();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Transactions Screen'),
-      ),
-      body: Column(
+    return Container(
+      padding: _appTheme.screenPadding,
+      child: Column(
         children: [
-          Flexible(child: TextField(
-            decoration: const InputDecoration(
-              hintText: "Search string",
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Transactions",
+                style: _appTheme.pageHeading,
+                textAlign: TextAlign.left,
+              )
             ),
-            onSubmitted: (String newText) {
-              if (newText.isNotEmpty) {
-                print("text");
-              }
-            }
-            ),
-          ),
-          Flexible(child: table),
-        ],
-      )
+            Flexible(child: table),
+          ],
+      ),
     );
-  }
-
-  void Test(String value){
-    print(value);
   }
 }
 
