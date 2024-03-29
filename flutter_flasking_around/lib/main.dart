@@ -218,7 +218,7 @@ class _NavDrawerState extends State<NavDrawer> {
     );
 
     Widget buildMenuItems(BuildContext context) => Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Column(
         children: menuItems.map((e) => menuItem(context, e[0], e[1], e[2])).toList(),
       )
@@ -229,8 +229,12 @@ class _NavDrawerState extends State<NavDrawer> {
       child: TextButton(
         style: TextButton.styleFrom(
           foregroundColor: _selected == route ? _appTheme.color: Colors.black,
-          textStyle: _appTheme.menuFont,
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          backgroundColor: _selected == route? _appTheme.behindColor: Colors.transparent,
+          textStyle: _selected == route ? _appTheme.menuFontActive: _appTheme.menuFont,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0)
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         ),
         child: Row(
           children: [
