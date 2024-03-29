@@ -11,9 +11,10 @@ import 'package:system_theme/system_theme.dart';
 import 'package:url_launcher/link.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'theme.dart';
+import 'package:flutter_flasking_around/theme.dart';
 
 const String appTitle = 'Nickyyy';
+final _appTheme = AppTheme();
 
 /// Checks if the current environment is a desktop environment.
 bool get isDesktop {
@@ -55,8 +56,6 @@ void main() async {
 
   runApp(const MyApp());
 }
-
-final _appTheme = AppTheme();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -170,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
         children: [
           ConstrainedBox(
             constraints: BoxConstraints(
-              maxWidth: 200),
+              maxWidth: 240),
             child: NavDrawer()
           ),
           Flexible(
@@ -200,6 +199,10 @@ class _NavDrawerState extends State<NavDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    // Set the current route as a nav bar selection
+    setState(() {
+      _selected= (GoRouter.of(context).routeInformationProvider.value.uri).toString();
+    });
     return Container(
         color: Colors.grey[200],
         child: Column(
