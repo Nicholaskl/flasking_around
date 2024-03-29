@@ -72,7 +72,6 @@ class MyApp extends StatelessWidget {
         final appTheme = context.watch<AppTheme>();
         return MaterialApp.router(
           title: appTitle,
-          themeMode: appTheme.mode,
           debugShowCheckedModeBanner: false,
           color: appTheme.color,
           darkTheme: ThemeData(
@@ -185,8 +184,19 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
 
 }
 
-class NavDrawer extends StatelessWidget{
-  const NavDrawer({Key? key}) : super(key : key);
+class NavDrawer extends StatefulWidget{
+  const NavDrawer({super.key});
+
+  @override
+  State<NavDrawer> createState() => _NavDrawerState();
+}
+
+class _NavDrawerState extends State<NavDrawer> {
+  String _selected = "/";
+  List<List> menuItems = [
+    [Icons.home, "Home", ('/')],
+    [Icons.table_chart, "Transactions", ('/transactions')]
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +204,6 @@ class NavDrawer extends StatelessWidget{
         color: Colors.grey[200],
         child: Column(
           children: [
-            Text("Hi there Nicholas"),
             buildHeader(context),
             buildMenuItems(context)
           ],
@@ -211,29 +220,33 @@ class NavDrawer extends StatelessWidget{
     Widget buildMenuItems(BuildContext context) => Container(
       padding: const EdgeInsets.all(16),
       child: Column(
-        children: [
-          TextButton(
-            child: Row(
-              children: [
-                Icon(Icons.home),
-                Text("Home")
-              ],
-            ),
-            onPressed: () => context.go('/')
-          ),
-          TextButton(
-            child: Row(
-              children: [
-                Icon(Icons.table_chart),
-                Text("Transactions")
-              ],
-            ),
-            onPressed: () {context.go('/transactions');},
-          )
-        ],
+        children: menuItems.map((e) => menuItem(context, e[0], e[1], e[2])).toList(),
       )
     );
-  
+
+    Widget menuItem(BuildContext context, IconData icon, String text, String route) => Container(
+      margin: const EdgeInsets.only(bottom: 6),
+      child: TextButton(
+        style: TextButton.styleFrom(
+          foregroundColor: _selected == route ? _appTheme.color: Colors.black,
+          textStyle: _appTheme.menuFont,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+        ),
+        child: Row(
+          children: [
+            Icon(icon),
+            Container(
+              padding: const EdgeInsets.only(left: 8),
+              child: Text(text))
+          ],),
+          onPressed: () { 
+            context.go(route);
+            setState(() {
+              _selected = route;
+            });
+          },
+      )
+    );  
 }
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
