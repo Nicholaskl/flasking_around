@@ -10,11 +10,17 @@ enum NavigationIndicators { sticky, end }
 
 class AppTheme extends ChangeNotifier {
   Color color = Colors.deepPurpleAccent;
+  Color behindColor = Colors.deepPurple.shade50;
   TextDirection textDirection = TextDirection.ltr;
   WindowEffect windowEffect = WindowEffect.disabled;
 
   TextStyle menuFont = const TextStyle(
-    fontSize: 18,
+    fontSize: 20,
+    fontWeight: FontWeight.w500
+  );
+
+  TextStyle menuFontActive = const TextStyle(
+    fontSize: 20,
     fontWeight: FontWeight.w600
   );
 
