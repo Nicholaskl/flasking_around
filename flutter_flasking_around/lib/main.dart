@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:flutter_flasking_around/screens/transactions_page.dart';
+import 'package:flutter_flasking_around/screens/upload_page.dart';
 import 'package:flutter_flasking_around/widgets/transactions.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -266,7 +267,8 @@ final router = GoRouter(
       routes: [
         /// Home
         GoRoute(path: '/', builder: (context, state) => const HomePage()),
-        GoRoute(path: '/transactions', builder: (context, state) => const TransactionsPage())
+        GoRoute(path: '/transactions', builder: (context, state) => const TransactionsPage()),
+        GoRoute(path: '/upload', builder: (context, state) => const UploadPage()),
       ],
     ),
   ] 
