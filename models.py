@@ -6,7 +6,7 @@ class Transaction(db.Model):
     __tablename__ = "transactions"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    account = db.Column(db.Integer, db.ForeignKey("accounts.id"))
+    account = db.Column(db.Integer, db.ForeignKey("accounts.id"), nullable=False)
     date = db.Column(db.String(32))
     desc = db.Column(db.String(255))
     cost = db.Column(db.Float)

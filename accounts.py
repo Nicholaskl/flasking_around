@@ -22,7 +22,7 @@ def read_one(account_id):
     if account is not None:
         return account_schema.dump(account)
     else:
-        abort(404, f"Transcation with the id: {account_id} was not found")
+        abort(404, f"Account with the id: {account_id} was not found")
 
 
 def getTransactions(account_list):
