@@ -35,7 +35,7 @@ ACCOUNTS = [
         ],
     },
     {
-        "nickname": "Main spending",
+        "nickname": "Long term spending",
         "bank_name": "Westpac",
         "account_type": "Spending",
         "rel_transactions": [
