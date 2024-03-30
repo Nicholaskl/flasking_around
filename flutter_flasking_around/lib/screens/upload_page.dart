@@ -1,5 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/link.dart';
 import 'package:flutter_flasking_around/theme.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +25,8 @@ class _UploadPageState extends State<UploadPage> {
   String? comboboxValue;
   late Future<List<AccountModel>> _future;
   int? accountSelected;
+  PlatformFile? path;
+  static var dio = Dio();
 
   @override
   void initState() {
@@ -43,6 +51,44 @@ class _UploadPageState extends State<UploadPage> {
     throw Exception('Error fetching data');
   }
 
+  void pickFiles() async {
+    print("hi");
+    FilePickerResult? _path;
+    try {
+      _path = (await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowMultiple: false,
+        onFileLoading: (FilePickerStatus status) => print(status),
+        allowedExtensions: ["csv"],
+      ));
+    } on PlatformException catch (e) {
+      log("Unsupported operation" + e.toString());
+    } catch (e) {
+      log(e.toString());
+    }
+    setState(() {
+      if (_path != null) {
+        path = _path.files[0];
+      }
+    });
+  }
+
+  static Future<int> uploadFile(Uint8List? file, int? _accountSelected) async {
+    print(file as List<int>);
+    FormData formData = FormData.fromMap({
+      "file": MultipartFile.fromBytes(
+        file as List<int>,
+        headers: {HttpHeaders.contentTypeHeader: ["application/csv"],},
+      )
+    });
+    var response = 
+      await dio.post("http://localhost:8000/api/upload", data:file as List<int>, queryParameters: {"account_id_query": _accountSelected});
+    if (response.statusCode != 201){
+      throw Exception('Error uploading data'); 
+    }
+    return Future.value(response.statusCode);
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -61,11 +107,15 @@ class _UploadPageState extends State<UploadPage> {
           Column(
             children: [
               Padding(padding: EdgeInsets.symmetric(vertical: 16)),
-              Text(
-                style: _appTheme.contentHeading,
-                "Select account to choose from"
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  style: _appTheme.contentHeading,
+                  "Select account to choose from"
+                ),
               ),
               Container(
+                alignment: Alignment.centerLeft,
                 constraints: BoxConstraints(maxWidth: 100),
                 child: FutureBuilder<List<AccountModel>>(
                   future: _future, 
@@ -90,6 +140,51 @@ class _UploadPageState extends State<UploadPage> {
                       return Center(child: const CircularProgressIndicator());
                     }
                   }),
+              )
+            ],
+          ),
+          Column(
+            children: [
+              Padding(padding: EdgeInsets.symmetric(vertical: 16)),
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  style: _appTheme.contentHeading,
+                  "Please Select a file to upload"
+                ),
+              ),
+              FilledButton(
+                onPressed: () {
+                  pickFiles();
+                }, 
+                style: _appTheme.buttonTheme,
+                child: Row(
+                  children: [
+                    Icon(Icons.file_present_rounded),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 6),
+                      child: Text("Pick csv")
+                    ),
+                  ],)
+              )
+            ],
+          ),
+          Column(
+            children: [
+              FilledButton(
+                onPressed: () {
+                  // pickFiles();
+                  uploadFile(path!.bytes, accountSelected);
+                }, 
+                style: _appTheme.buttonTheme,
+                child: Row(
+                  children: [
+                    Icon(Icons.file_present_rounded),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 6),
+                      child: Text("Upload")
+                    ),
+                  ],)
               )
             ],
           )
