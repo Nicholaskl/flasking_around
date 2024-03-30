@@ -52,7 +52,6 @@ class _UploadPageState extends State<UploadPage> {
   }
 
   void pickFiles() async {
-    print("hi");
     FilePickerResult? _path;
     try {
       _path = (await FilePicker.platform.pickFiles(
@@ -102,6 +101,15 @@ class _UploadPageState extends State<UploadPage> {
             child: Text(
               "Upload",
               style: _appTheme.pageHeading,
+            ),
+          ),
+          Container(
+            alignment: Alignment.centerRight,
+            child: IconButton(
+              onPressed: () {
+                context.go("/transactions");
+              },
+              icon: Icon(Icons.close),
             ),
           ),
           Column(
@@ -173,8 +181,27 @@ class _UploadPageState extends State<UploadPage> {
             children: [
               FilledButton(
                 onPressed: () {
-                  // pickFiles();
-                  uploadFile(path!.bytes, accountSelected);
+                  var printText = "";
+                  var status = uploadFile(path!.bytes, accountSelected);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: FutureBuilder(
+                        future: status,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData){
+                            if (snapshot.data.toString() == "201") {
+                              printText = "Successfully Updated";
+                              context.go("/transactions");
+                            }
+                          }
+                          return snapshot.hasData
+                            ? Text(printText)
+                            : Text("Something went wrong. Try again");
+                        },
+                      )
+                    ),
+                  );
+                  
                 }, 
                 style: _appTheme.buttonTheme,
                 child: Row(
