@@ -50,6 +50,13 @@ components:
       required: True
       schema:
         type: string
+    account_id_query:
+      name: "account_id_query"
+      description: "The id for an account"
+      in: query
+      required: True
+      schema:
+        type: string
 
 paths:
   /transactions:
@@ -141,6 +148,8 @@ paths:
       tags:
         - "Upload"
       summary: "Upload csv"
+      parameters:
+        - $ref: "#/components/parameters/account_id_query"
       requestBody:
         description: .csv file 
         content:
