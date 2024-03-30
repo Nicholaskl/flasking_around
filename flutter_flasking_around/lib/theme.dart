@@ -27,7 +27,7 @@ class AppTheme extends ChangeNotifier {
   TextDirection textDirection = TextDirection.ltr;
   WindowEffect windowEffect = WindowEffect.disabled;
 
-  EdgeInsets screenPadding = const EdgeInsets.only(left: 8, right: 8, top: 20);
+  EdgeInsets screenPadding = const EdgeInsets.only(left: 24, right: 24, top: 32);
 
   TextStyle menuFont = const TextStyle(
     fontSize: 20,
@@ -42,7 +42,11 @@ class AppTheme extends ChangeNotifier {
   TextStyle pageHeading = const TextStyle(
     fontSize: 42,
     fontWeight: FontWeight.bold,
+  );
 
+  TextStyle contentHeading = const TextStyle(
+    fontSize: 32,
+    fontWeight: FontWeight.w600,
   );
 
   ButtonStyle buttonTheme = const ButtonStyle(

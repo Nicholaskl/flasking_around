@@ -4,6 +4,7 @@ import 'package:flutter_flasking_around/widgets/transactions.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/link.dart';
 import 'package:flutter_flasking_around/theme.dart';
+import 'package:go_router/go_router.dart';
 
 final _appTheme = AppTheme();
 
@@ -45,7 +46,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
               alignment: Alignment.centerRight,
               padding: const EdgeInsets.only(right: 16),
               child: FilledButton(
-                onPressed: () {}, 
+                onPressed: () {
+                  context.go("/upload");
+                }, 
                 style: _appTheme.buttonTheme,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
