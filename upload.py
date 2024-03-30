@@ -8,13 +8,14 @@ import pandas as pd
 
 
 def upload_file(account_id_query, file):
+    print(file)
     if read_one(account_id_query) is None:
         abort(404, f"Account bad")
 
     # convert from byte string to the dataframe
     col_names = ["date", "cost", "desc", "balance"]
     df = pd.read_csv(BytesIO(file), names=col_names, header=None)
-    print(account_id_query, file)
+    print(account_id_query, df)
 
     # naive front and back check to see that the transaction ranges don't already
     # exist... This is stupid because the middle part could be... anyways.
