@@ -72,16 +72,8 @@ class MyApp extends StatelessWidget {
         return MaterialApp.router(
           title: appTitle,
           debugShowCheckedModeBanner: false,
-          color: appTheme.color,
           darkTheme: ThemeData(
             brightness: Brightness.dark,
-            // accentColor: appTheme.color,
-            visualDensity: VisualDensity.standard,
-            // focusTheme: FocusThemeData(
-            //   glowFactor: is10footScreen(context) ? 2.0 : 0.0,
-            // ),
-          ),
-          theme: ThemeData(
             // accentColor: appTheme.color,
             visualDensity: VisualDensity.standard,
             // focusTheme: FocusThemeData(
@@ -94,6 +86,7 @@ class MyApp extends StatelessWidget {
               textDirection: appTheme.textDirection,
               child: Theme(
                 data: ThemeData(
+                  colorScheme: appTheme.colorScheme,
                   backgroundColor: appTheme.windowEffect !=
                           flutter_acrylic.WindowEffect.disabled
                       ? const Color.fromRGBO(255, 255, 255, 0.0)
@@ -204,7 +197,7 @@ class _NavDrawerState extends State<NavDrawer> {
       _selected= (GoRouter.of(context).routeInformationProvider.value.uri).toString();
     });
     return Container(
-        color: Colors.grey[200],
+        color: Colors.grey.shade800,
         child: Column(
           children: [
             buildHeader(context),
@@ -231,8 +224,8 @@ class _NavDrawerState extends State<NavDrawer> {
       margin: const EdgeInsets.only(bottom: 6),
       child: TextButton(
         style: TextButton.styleFrom(
-          foregroundColor: _selected == route ? _appTheme.color: Colors.black,
-          backgroundColor: _selected == route? _appTheme.behindColor: Colors.transparent,
+          foregroundColor: _selected == route ? _appTheme.colorScheme.primary: _appTheme.colorScheme.onPrimary,
+          backgroundColor: _selected == route? _appTheme.colorScheme.onPrimary: Colors.transparent,
           textStyle: _selected == route ? _appTheme.menuFontActive: _appTheme.menuFont,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0)

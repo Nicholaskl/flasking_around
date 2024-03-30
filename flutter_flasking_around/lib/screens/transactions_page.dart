@@ -30,13 +30,35 @@ class _TransactionsPageState extends State<TransactionsPage> {
       padding: _appTheme.screenPadding,
       child: Column(
         children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Transactions",
-                style: _appTheme.pageHeading,
-                textAlign: TextAlign.left,
-              )
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Transactions",
+                  style: _appTheme.pageHeading,
+                  textAlign: TextAlign.left,
+                )
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: 16),
+              child: FilledButton(
+                onPressed: () {}, 
+                style: _appTheme.buttonTheme,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.upload_file),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 6),
+                      child: Text("Upload csv")
+                    ),
+                  ],
+                ),
+                // style: ,
+              ),
             ),
             Flexible(child: table),
           ],
