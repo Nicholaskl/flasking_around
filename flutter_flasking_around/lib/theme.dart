@@ -1,5 +1,4 @@
 // Gotten from fluent documentation
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:system_theme/system_theme.dart';
@@ -9,8 +8,22 @@ import 'package:flutter/material.dart';
 enum NavigationIndicators { sticky, end }
 
 class AppTheme extends ChangeNotifier {
-  Color color = Colors.deepPurpleAccent;
-  Color behindColor = Colors.deepPurple.shade50;
+  ColorScheme colorScheme = ColorScheme(
+    brightness: Brightness.dark, 
+    primary: Colors.deepPurpleAccent, 
+    onPrimary: Colors.purple.shade50, 
+    secondary: Colors.indigo.shade300, 
+    onSecondary: Colors.indigo, 
+    error: Colors.red, 
+    onError: Colors.red.shade800, 
+    background:  Colors.black, 
+    onBackground: Colors.black54, 
+    surface: Colors.grey.shade900, 
+    onSurface: Colors.white
+    );
+
+  // Color color = Colors.deepPurpleAccent;
+  // Color behindColor = Colors.deepPurple.shade50;
   TextDirection textDirection = TextDirection.ltr;
   WindowEffect windowEffect = WindowEffect.disabled;
 
@@ -18,7 +31,7 @@ class AppTheme extends ChangeNotifier {
 
   TextStyle menuFont = const TextStyle(
     fontSize: 20,
-    fontWeight: FontWeight.w500
+    fontWeight: FontWeight.w500,
   );
 
   TextStyle menuFontActive = const TextStyle(
@@ -30,6 +43,15 @@ class AppTheme extends ChangeNotifier {
     fontSize: 42,
     fontWeight: FontWeight.bold,
 
+  );
+
+  ButtonStyle buttonTheme = const ButtonStyle(
+    padding: MaterialStatePropertyAll(EdgeInsets.all(16)),
+    iconSize: MaterialStatePropertyAll(30),
+    textStyle: MaterialStatePropertyAll(TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w600
+    ))
   );
 
   Locale? _locale;
