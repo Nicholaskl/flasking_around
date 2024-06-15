@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:flutter_flasking_around/screens/transactions_page.dart';
+import 'package:flutter_flasking_around/screens/settings_page.dart';
 import 'package:flutter_flasking_around/screens/upload_page.dart';
 import 'package:flutter_flasking_around/widgets/transactions.dart';
 import 'package:go_router/go_router.dart';
@@ -188,7 +189,8 @@ class _NavDrawerState extends State<NavDrawer> {
   String _selected = "/";
   List<List> menuItems = [
     [Icons.home, "Home", ('/')],
-    [Icons.table_chart, "Transactions", ('/transactions')]
+    [Icons.table_chart, "Transactions", ('/transactions')],
+    [Icons.settings, "Settings", ('/settings')],
   ];
 
   @override
@@ -268,6 +270,7 @@ final router = GoRouter(
         /// Home
         GoRoute(path: '/', builder: (context, state) => const HomePage()),
         GoRoute(path: '/transactions', builder: (context, state) => const TransactionsPage()),
+        GoRoute(path: '/settings', builder: (context, state) => const SettingsPage()),
         GoRoute(path: '/upload', builder: (context, state) => const UploadPage()),
       ],
     ),
