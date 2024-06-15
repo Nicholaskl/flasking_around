@@ -57,7 +57,7 @@ class _UploadPageState extends State<UploadPage> {
       _path = (await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowMultiple: false,
-        onFileLoading: (FilePickerStatus status) => print(status),
+        onFileLoading: (FilePickerStatus status) => log(status.toString()),
         allowedExtensions: ["csv"],
       ));
     } on PlatformException catch (e) {
@@ -73,7 +73,6 @@ class _UploadPageState extends State<UploadPage> {
   }
 
   static Future<int> uploadFile(Uint8List? file, int? _accountSelected) async {
-    print(file as List<int>);
     FormData formData = FormData.fromMap({
       "file": MultipartFile.fromBytes(
         file as List<int>,
@@ -92,9 +91,10 @@ class _UploadPageState extends State<UploadPage> {
   Widget build(BuildContext context) {
 
     return Container(
-      alignment: Alignment.centerLeft,
       padding: _appTheme.screenPadding,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             alignment: Alignment.centerLeft,
@@ -113,17 +113,17 @@ class _UploadPageState extends State<UploadPage> {
             ),
           ),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(padding: EdgeInsets.symmetric(vertical: 16)),
               Container(
-                alignment: Alignment.centerLeft,
                 child: Text(
                   style: _appTheme.contentHeading,
                   "Select account to choose from"
                 ),
               ),
               Container(
-                alignment: Alignment.centerLeft,
                 constraints: BoxConstraints(maxWidth: 100),
                 child: FutureBuilder<List<AccountModel>>(
                   future: _future, 
@@ -152,23 +152,22 @@ class _UploadPageState extends State<UploadPage> {
             ],
           ),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(padding: EdgeInsets.symmetric(vertical: 16)),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
+              Text(
                   style: _appTheme.contentHeading,
                   "Please Select a file to upload"
                 ),
-              ),
               FilledButton(
                 onPressed: () {
                   pickFiles();
                 }, 
                 style: _appTheme.buttonTheme,
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.file_present_rounded),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 6),
                       child: Text("Pick csv")
@@ -179,6 +178,7 @@ class _UploadPageState extends State<UploadPage> {
           ),
           Column(
             children: [
+              Padding(padding: EdgeInsets.symmetric(vertical: 16)),
               FilledButton(
                 onPressed: () {
                   var printText = "";
@@ -205,6 +205,7 @@ class _UploadPageState extends State<UploadPage> {
                 }, 
                 style: _appTheme.buttonTheme,
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(Icons.file_present_rounded),
                     Container(
