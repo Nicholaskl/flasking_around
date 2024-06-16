@@ -11,6 +11,7 @@ class Transaction(db.Model):
     desc = db.Column(db.String(255))
     cost = db.Column(db.Float)
     balance = db.Column(db.Float)
+    category = db.Column(db.String(64), nullable=True)
 
 
 class Account(db.Model):
