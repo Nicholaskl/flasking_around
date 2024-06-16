@@ -16,6 +16,7 @@ def upload_file(account_id_query, file):
     col_names = ["date", "cost", "desc", "balance"]
     df = pd.read_csv(BytesIO(file), names=col_names, header=None)
     print(account_id_query, df)
+    df["balance"].fillna("0.00", inplace=True)
 
     # naive front and back check to see that the transaction ranges don't already
     # exist... This is stupid because the middle part could be... anyways.
