@@ -3,10 +3,6 @@ from flask import abort, make_response
 from models import Filter, filter_schema, filters_schema
 
 
-# def get_timestamp():
-#     return datetime.now().strftime(("%Y-%m-%d %H:%M:%S"))
-
-
 def read_all():
     transactions = Filter.query.all()
     return filters_schema.dump(transactions)
@@ -19,8 +15,6 @@ def clear():
 
     db.session.commit()
     return make_response(f"Database was cleared", 200)
-    # else:
-    #     abort(404, f"Databse already clear")
 
 
 def add(filter):
