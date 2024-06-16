@@ -3,7 +3,7 @@ import connexion
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 
-store_dir = pathlib.Path("./store").resolve()
+store_dir = pathlib.Path("./flask_backend/store").resolve()
 basedir = pathlib.Path(__file__).parent.resolve()
 connex_app = connexion.App(__name__, specification_dir=basedir)
 
