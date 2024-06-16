@@ -8,6 +8,9 @@ from models import (
     transaction_schema,
     transactions_schema,
 )
+from config import db
+
+VALID_ACCOUNT_TYPES = ["Savings", "Spending", "Credit"]
 
 
 def read_all():
@@ -33,6 +36,39 @@ def getTransactions(account_list):
 
     transactions = Transaction.query.join(Account).where(Account.id.in_(account_list))
     return transactions_schema.dump(transactions)
+
+
+def clear():
+    accounts = Account.query.all()
+    for account in accounts:
+        db.session.delete(account)
+
+    db.session.commit()
+    return make_response(f"Database was cleared", 200)
+
+
+def add(account):
+    nickname = account.get("nickname")
+    account_type = account.get("account_type")
+
+    existing_account = Account.query.filter(
+        Account.nickname == nickname,
+    ).one_or_none()
+
+    if account_type not in VALID_ACCOUNT_TYPES:
+        abort(406, f"Not a valid account type")
+    elif existing_account is None:
+        new_account = account_schema.load(account, session=db.session)
+        db.session.add(new_account)
+        db.session.commit()
+        return account_schema.dump(new_account), 201
+    else:
+        abort(406, f"Account with those details already exists")
+
+
+def read_all_summary():
+    accounts = Account.query.all()
+    return accounts_schema.dump(accounts)
 
 
 # session.query(Address).select_from(User).\

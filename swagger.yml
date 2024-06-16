@@ -25,6 +25,19 @@ components:
           type: "string"
         balance:
           type: "string"
+    Account:
+      type: "object"
+      required:
+        - nickname
+        - bank_name
+        - account_type
+      properties:
+        nickname:
+          type: "string"
+        bank_name:
+          type: "string"
+        account_type:
+          type: "string"
     Account_List:
       type: "array"
 
@@ -170,6 +183,23 @@ paths:
       responses:
         "200":
           description: "Successfully retrieved all accounts"
+  /accounts/add:
+    post:
+      operationId: "accounts.add"
+      tags:
+        - "Accounts"
+      summary: "Add account"
+      requestBody:
+          description: "Account to add"
+          required: True
+          content:
+            application/json:
+              schema:
+                x-body-name: "account"
+                $ref: "#/components/schemas/Account"
+      responses:
+        "201":
+          description: "Successfully added transaction"
   /accounts/{account_id}:
     get:
       operationId: "accounts.read_one"
@@ -181,6 +211,15 @@ paths:
       responses:
         "200":
           description: "Successfully read account information"
+  /accounts/clear:
+    get:
+      operationId: "accounts.clear"
+      tags:
+        - "Accounts"
+      summary: "Clear all of the accounts in the database"
+      responses:
+        "200":
+          description: "Successfully cleared all accounts from the database"
   /accounts/getTransactions:
     post:
       operationId: "accounts.getTransactions"
@@ -198,3 +237,12 @@ paths:
       responses:
         "201":
           description: "Successfully retrieved transactions"
+  /accounts/getSummary:
+    get:
+      operationId: "accounts.read_all_summary"
+      tags:
+        - "Accounts"
+      summary: "Get summary list of all accounts"
+      responses:
+        "200":
+          description: "Successfully retrieved all accounts"
