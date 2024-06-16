@@ -30,6 +30,14 @@ class Account(db.Model):
     )
 
 
+class Filter(db.Model):
+    __tablename__ = "filters"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    searchterm = db.Column(db.String(64))
+    category = db.Column(db.String(64))
+
+
 class TransactionSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Transaction
@@ -48,7 +56,17 @@ class AccountSchema(ma.SQLAlchemyAutoSchema):
     transactions = fields.Nested(TransactionSchema, many=True)
 
 
+class FilterSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Filter
+        load_instance = True
+        sqla_session = db.session
+        include_relationships = True
+
+
 transaction_schema = TransactionSchema()
 transactions_schema = TransactionSchema(many=True)
 account_schema = AccountSchema()
 accounts_schema = AccountSchema(many=True)
+filter_schema = FilterSchema()
+filters_schema = FilterSchema(many=True)
