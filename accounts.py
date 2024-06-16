@@ -67,8 +67,11 @@ def add(account):
 
 
 def read_all_summary():
-    accounts = Account.query.all()
-    return accounts_schema.dump(accounts)
+    # Might want something here that looks for only spending / saving acounts
+    # Since... well crdit accounts don't have a balance.
+    transactions = Transaction.query.group_by(Transaction.account).all()
+    print(transactions)
+    return transactions_schema.dump(transactions)
 
 
 # session.query(Address).select_from(User).\
