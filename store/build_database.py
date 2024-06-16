@@ -4,7 +4,7 @@ import sys
 sys.path.append("/Users/nicholaskh/Documents/randomCode/flasking_around/")
 from datetime import datetime
 from config import app, db
-from models import Account, Transaction
+from models import Account, Transaction, Filter
 
 ACCOUNTS = [
     {
@@ -15,10 +15,6 @@ ACCOUNTS = [
             ("06/01/2022", "Description number 1", 9.99, 10.25),
             ("05/03/2022", "Description number 2", 63.26, 134.5),
             ("05/03/2022", "Description number 3", 929.3, 1361.5),
-            #         date = db.Column(db.String(32))
-            # desc = db.Column(db.String(255))
-            # cost = db.Column(db.Float)
-            # balance = db.Column(db.Float)
         ],
     },
     {
@@ -28,10 +24,6 @@ ACCOUNTS = [
         "rel_transactions": [
             ("04/01/2022", "Description number 4", 246.2, 235.23),
             ("09/03/2022", "Description number 5", 46.3, 46.2),
-            #         date = db.Column(db.String(32))
-            # desc = db.Column(db.String(255))
-            # cost = db.Column(db.Float)
-            # balance = db.Column(db.Float)
         ],
     },
     {
@@ -41,11 +33,18 @@ ACCOUNTS = [
         "rel_transactions": [
             ("06/01/2022", "Description number 6", 26.2, 57.3),
             ("03/03/2022", "Description number 7", 6458.4, 769.5),
-            #         date = db.Column(db.String(32))
-            # desc = db.Column(db.String(255))
-            # cost = db.Column(db.Float)
-            # balance = db.Column(db.Float)
         ],
+    },
+]
+
+FILTERS = [
+    {
+        "searchterm": "MCDONALDS",
+        "category": "Food",
+    },
+    {
+        "searchterm": "TICKETEK",
+        "category": "Entertainment",
     },
 ]
 
@@ -68,4 +67,10 @@ with app.app_context():
                 )
             )
         db.session.add(new_account)
+
+    for data in FILTERS:
+        new_filter = Filter(
+            searchterm=data.get("searchterm"), category=data.get("category")
+        )
+        db.session.add(new_filter)
     db.session.commit()

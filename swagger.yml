@@ -38,6 +38,16 @@ components:
           type: "string"
         account_type:
           type: "string"
+    Filter:
+      type: "object"
+      required:
+        - searchterm
+        - category
+      properties:
+        searchterm:
+          type: "string"
+        category:
+          type: "string"
     Account_List:
       type: "array"
 
@@ -246,3 +256,38 @@ paths:
       responses:
         "200":
           description: "Successfully retrieved all accounts"
+  /filters:
+    get:
+      operationId: "filters.read_all"
+      tags:
+        - "Filters"
+      summary: "Get list of all filters"
+      responses:
+        "200":
+          description: "Successfully retrieved all filters"
+  /filters/clear:
+    get:
+      operationId: "filters.clear"
+      tags:
+        - "Filters"
+      summary: "Clear all of the filters in the database"
+      responses:
+        "200":
+          description: "Successfully cleared all filters from the database"
+  /filters/add:
+    post:
+      operationId: "filters.add"
+      tags:
+        - "Filters"
+      summary: "Add filter"
+      requestBody:
+          description: "Filter to add"
+          required: True
+          content:
+            application/json:
+              schema:
+                x-body-name: "filter"
+                $ref: "#/components/schemas/Filter"
+      responses:
+        "201":
+          description: "Successfully added filter"

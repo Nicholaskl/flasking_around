@@ -45,6 +45,12 @@ def upload_file(account_id_query, file):
         Transaction.cost == cost,
         Transaction.balance == balance,
     ).one_or_none()
+
+    # Since it is a dataframe we can apply regex and search for things
+    # Maybe match against a database that we keep - that we can edit in the UI
+    # Look for "MCdonalds" and then give it the food category or something
+    # Maybe if ABNs or something we can implement a search if it hasn't been seen before
+    # Use some API or whatever
     if first_transaction_from_csv is None and last_transaction_from_csv is None:
         print("HI Nick")
         for i, row in df.iterrows():
