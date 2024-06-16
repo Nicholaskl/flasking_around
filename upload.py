@@ -8,7 +8,7 @@ import pandas as pd
 
 
 def upload_file(account_id_query, file):
-    print(file)
+    # print(file)
     if read_one(account_id_query) is None:
         abort(404, f"Account bad")
 
@@ -45,8 +45,8 @@ def upload_file(account_id_query, file):
         Transaction.cost == cost,
         Transaction.balance == balance,
     ).one_or_none()
-
     if first_transaction_from_csv is None and last_transaction_from_csv is None:
+        print("HI Nick")
         for i, row in df.iterrows():
             print(row["balance"], row["cost"])
             new_transaction = {
