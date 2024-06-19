@@ -1,5 +1,6 @@
 from config import db
 from flask import abort, make_response
+from datetime import datetime
 from models import (
     Transaction,
     transaction_schema,
@@ -54,7 +55,6 @@ def upload_file(account_id_query, file):
 
     filters = Filter.query.all()
     filters = filters_schema.dump(filters)
-    print(filters)
 
     if filters is None:
         abort(406, f"No filters found")
@@ -73,12 +73,16 @@ def upload_file(account_id_query, file):
         # Use some API or whatever
         if first_transaction_from_csv is None and last_transaction_from_csv is None:
             for i, row in df.iterrows():
+                date_formatted = datetime.strptime(row["date"], "%d/%m/%Y")
+                date_formatted = date_formatted.strftime("%Y/%m/%d")
+
                 new_transaction = {
                     "accounts": account_id_query,
-                    "date": row["date"],
+                    "date": date_formatted,
                     "desc": row["desc"],
                     "cost": row["cost"],
                     "balance": row["balance"],
+                    "category": "Other",
                 }
 
                 # If it has a category

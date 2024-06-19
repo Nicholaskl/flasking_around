@@ -48,6 +48,16 @@ components:
           type: "string"
         category:
           type: "string"
+    Date_Between:
+      type: object
+      properties:
+        date_start: 
+          type: string
+        date_end: 
+          type: string
+      required:
+        - date_start
+        - date_end
     Account_List:
       type: "array"
 
@@ -291,3 +301,20 @@ paths:
       responses:
         "201":
           description: "Successfully added filter"
+  /summary/:
+    post:
+      operationId: "summary.getSummary"
+      tags:
+        - "Summary"
+      summary: "Retrieve summary of transactions between two months"
+      requestBody:
+          description: "Contains timestart and timeend"
+          required: True
+          content:
+            application/json:
+              schema:
+                x-body-name: "Date_Between"
+                $ref: "#/components/schemas/Date_Between"
+      responses:
+        "201":
+          description: "Successfully retrieved summary"
