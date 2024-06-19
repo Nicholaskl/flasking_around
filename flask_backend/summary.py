@@ -19,14 +19,14 @@ def getSummary(Date_Between):
 
     # return dictionary
 
-    income = (
-        db.session.query(func.sum(Transaction.cost))
+    incomes = (
+        db.session.query(func.sum(Transaction.cost).label("income"))
         .filter(Transaction.date >= date_start, Transaction.date <= date_end)
         .filter(Transaction.cost >= 0)
         .group_by(Transaction.category)
         .all()
     )
-    spending = (
+    spendings = (
         db.session.query(Transaction.category, func.sum(Transaction.cost))
         .filter(Transaction.date >= date_start, Transaction.date <= date_end)
         .filter(Transaction.cost < 0)
@@ -35,13 +35,23 @@ def getSummary(Date_Between):
     )
     # saving =
 
-    balance = (
+    balances = (
         db.session.query(Transaction.account, Transaction.balance)
         .filter(Transaction.balance > 0)
         .group_by(Transaction.account)
         .all()
     )
 
-    print("income", income)
-    print("spending", spending)
-    print("balance", balance)
+    income = extract_items(incomes)
+    spending = extract_items(spendings)
+    balance = extract_items(balances)
+
+    export = {"income": income, "spending": spending, "balance": balance}
+    return export, 201
+
+
+def extract_items(list_of_rows):
+    export = {}
+    for item in list_of_rows:
+        export.update(item._mapping)
+    return export
